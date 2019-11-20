@@ -13,11 +13,14 @@ class News{
         News();
         void saveMeta(string& property, string& content);
         void printAllData();
+        void printTitle();
+        void splitTitle(string& title);
         vector<string> title;
         vector<string> body;
         vector<string> description;
         string _time;
         string fileName;
+        int language;
         map<string, string> meta_tags;
 };
 

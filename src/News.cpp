@@ -5,13 +5,27 @@
 News::News(){
     this->_time = "";
     this->fileName = "";
+    this->language = 0;
 }
 
 void News::saveMeta(string& property, string& content){
-    if(property == Constants::meta_title) this->title.push_back(content);
+    if(property == Constants::meta_title) this->splitTitle(content);
     else if(property == Constants::meta_time) this->_time = content;
     else if(property == Constants::meta_description) this->description.push_back(content);
     else this->meta_tags[property] = content;
+}
+
+void News::splitTitle(string& title){
+    string word = "";
+    char c = 0;
+    for(int i = 0; i < title.size(); i++){
+        c = title[i];
+        if(c == ' '){
+            if(word.size() != 0) this->title.push_back(word);
+            word = "";
+        }
+        else word.push_back(c);
+    }
 }
 
 void News::printAllData(){
@@ -61,4 +75,11 @@ void News::printAllData(){
             
         }
     }
+}
+
+void News::printTitle(){
+    for(int i = 0; i < this->title.size(); i++){
+        cout << this->title[i] << " ";
+    }
+    cout << endl;
 }

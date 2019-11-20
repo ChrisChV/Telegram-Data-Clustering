@@ -1,5 +1,7 @@
 #include <iostream>
+#include <fstream>
 #include "parser.h"
+#include "constants.h"
 
 using namespace std;
 

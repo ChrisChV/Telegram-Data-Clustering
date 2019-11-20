@@ -1,36 +1,20 @@
 #include <iostream>
-#include <chrono>
-#include "fileManager.h"
-#include "parser.h"
+#include "NewsManager.h"
 
 using namespace std;
 
-void printAllData(vector<News *> & data){
-    News * actual = nullptr;
-    for(int i = 0; i < data.size(); i++){
-        actual = data[i];
-        actual->printAllData();
-        cout << i << endl;
-    }
-}
-
 int main(int argc, char ** argv){
-    string dirPath = "./data/DataClusteringSample0817/20191117/00";
-    clock_t start, end;
-    
-    FileManager * fManager = new FileManager(dirPath);
-    vector<News *> all_data;
-    Parser parser(fManager);
-    start = clock();
-    while(fManager->nextBatch()){
-        parser.parseData();
-        all_data.insert(all_data.end(), parser.news_data.begin(), parser.news_data.end());
-        end = clock(); 
-        double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
-        cout << "Time: " << fixed << time_taken << endl;
-        start = clock();
+    if(argc < 3){
+        cout << "Missing arguments: tgnews <option> <source_dir>" << endl;
+        return 0;
     }
-    //printAllData(all_data);
+    string option(argv[1]);
+    string dirPath(argv[2]);
+    NewsManager nM(option, dirPath);
+    nM.start();
+    
+
+    
     return 0;
 }
 
