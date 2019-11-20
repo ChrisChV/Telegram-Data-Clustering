@@ -2,25 +2,33 @@
 #include <fstream>
 #include <dirent.h>
 #include <sys/types.h>
+#include <math.h>
 #include "fileManager.h"
 #include "constants.h"
 
 using namespace std;
 
+FileManager::FileManager(){}
 FileManager::FileManager(string& dirPath){
     this->batch_size = Constants::defaultBatchSize;
     this->actual_batch = -1;
     this->dirPath = dirPath;
     this->listFiles(dirPath);
-    this->nextBatch();
 }
 
 bool FileManager::nextBatch(){
+    int actual_index = 0;
     this->file_data.clear();
     this->actual_batch++;
-    for(int i = 0; i < this->batch_size && i < this->file_names.size(); i++){
-        this->getData(this->file_names[i + this->batch_size * this->actual_batch]);
+    if(this->actual_batch == ceil(this->file_names.size() / float(this->batch_size))){
+        return false;
     }
+    for(int i = 0; i < this->batch_size; i++){
+        actual_index = i + this->batch_size * this->actual_batch;
+        if(actual_index >= this->file_names.size()) break;
+        this->getData(this->file_names[actual_index]);
+    }
+    return true;
 }
 
 void FileManager::getData(string& fileName){
