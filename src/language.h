@@ -16,6 +16,8 @@ class Language{
         Parser * parser;
         unordered_set<string> russian_words;
         unordered_set<string> english_words;
+        vector<News *> english_news;
+        vector<News *> russian_news;
 };
 
 

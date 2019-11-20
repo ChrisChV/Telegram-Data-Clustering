@@ -45,8 +45,14 @@ string Language::detectLanguage(News * news){
         news->language = Constants::lang_other_value;
     }
     else{
-        if(english >= russian) news->language = Constants::lang_english_value;
-        else news->language = Constants::lang_russian_value;
+        if(english >= russian){
+            news->language = Constants::lang_english_value;
+            this->english_news.push_back(news);
+        }
+        else{
+            news->language = Constants::lang_russian_value;
+            this->russian_news.push_back(news);
+        }
     }
     /*
     if(english >= russian && english >= other){

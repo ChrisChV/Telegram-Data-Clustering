@@ -7,6 +7,7 @@
 #include "parser.h"
 #include "language.h"
 #include "fileManager.h"
+#include "jsonParser.h"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ class NewsManager{
         void t_end();
         clock_t _start;
         clock_t _end;
+        JsonParser jsonparser;
         
     public:
         NewsManager();

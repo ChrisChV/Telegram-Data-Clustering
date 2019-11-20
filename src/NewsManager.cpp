@@ -20,19 +20,19 @@ void NewsManager::start(){
     string temp = "";
     if(option == Constants::language_option){
         this->lG = new Language(this->parser);
-        this->t_start();
+        //this->t_start();
         while(this->fM->nextBatch()){
             this->parser->parseData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
                 temp = this->lG->detectLanguage(*it);
-                cout << (*it)->language << " " << temp << " ";
-                (*it)->printTitle();
+                //cout << (*it)->language << " " << temp << " ";
+                //(*it)->printTitle();
             }
-            this->copyParseData();
-            this->t_end();
-            this->t_start();
+            //this->t_end();
+            //this->t_start();
         }
+        this->jsonparser.printLanguages(this->lG);
     }
 }
 
