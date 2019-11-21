@@ -9,14 +9,10 @@ using namespace std;
 const float OTHER_THRESHOLD = 0.95;
 
 Language::Language(){
-    this->parser = nullptr;
-}
-Language::Language(Parser * parser){
-    this->parser = parser;
     this->loadWords();
 }
 
-string Language::detectLanguage(News * news){
+void Language::detectLanguage(News * news){
     int english = 0;
     int russian = 0;
     int other = 0;
@@ -42,7 +38,7 @@ string Language::detectLanguage(News * news){
     }*/
     
     if(float(other) / float(total) >= OTHER_THRESHOLD){
-        news->language = Constants::lang_other_value;
+        delete news;
     }
     else{
         if(english >= russian){
@@ -62,7 +58,6 @@ string Language::detectLanguage(News * news){
         news->language = Constants::lang_russian_value;
     }
     else news->language = Constants::lang_other_value;*/
-    return to_string(english) + " " + to_string(russian) + " " + to_string(other);
 }
 
 void Language::loadWords(){
@@ -94,4 +89,30 @@ void Language::loadWords(){
     file.close();
     
     
+}
+
+void Language::clearData(){
+    this->english_news.clear();
+    this->russian_news.clear();
+}
+
+void Language::deleteStopWords(News * news){
+    vector<string> new_vec;
+    if(news->language == Constants::lang_english_value){
+        for(auto it = news->body.begin(); it != news->body.end(); it++){
+            if(this->english_words.find(*it) != this->english_words.end()){
+                new_vec.push_back(*it);
+            }
+        }
+    }
+    else if(news->language == Constants::lang_russian_value){
+        for(auto it = news->body.begin(); it != news->body.end(); it++){
+            if(this->russian_words.find(*it) != this->russian_words.end()){
+                new_vec.push_back(*it);
+            }
+        }
+    }
+    news->body.clear();
+    news->body.shrink_to_fit();
+    news->body = new_vec;
 }

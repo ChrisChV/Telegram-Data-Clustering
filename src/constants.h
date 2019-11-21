@@ -9,11 +9,14 @@ namespace Constants{
     const string english_sw_path = "./stopwords-english";
     const string russian_words_path = "./words_russian";
     const string english_words_path = "./words_english";
+    const string news_english_words_path = "./news_english_words";
+    const string news_russian_words_path = "./news_russian_words";
     const string configFilePath = "./tgnews.conf";
     const string meta_title = "og:title";
     const string meta_time = "article:published_time";
     const string meta_description = "og:description";
     const string language_option = "languages";
+    const string news_option = "news";
     const int defaultBatchSize = 1000;
     const int lang_other_value = 0;
     const int lang_english_value = 1;

@@ -1,8 +1,8 @@
 SRC = ./src
 BUILD = $(SRC)/build
 
-tgnews: $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o
-	g++ -g -o ./tgnews $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o
+tgnews: $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o $(BUILD)/newsDiscriminator.o
+	g++ -g -o ./tgnews $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o $(BUILD)/newsDiscriminator.o
 
 $(BUILD)/main.o: $(SRC)/main.cpp
 	g++ -g -c $(SRC)/main.cpp -o $(BUILD)/main.o
@@ -24,6 +24,9 @@ $(BUILD)/language.o: $(SRC)/language.cpp
 
 $(BUILD)/jsonParser.o: $(SRC)/jsonParser.cpp
 	g++ -g -c $(SRC)/jsonParser.cpp -o $(BUILD)/jsonParser.o
+
+$(BUILD)/newsDiscriminator.o: $(SRC)/newsDiscriminator.cpp
+	g++ -g -c $(SRC)/newsDiscriminator.cpp -o $(BUILD)/newsDiscriminator.o
 
 clean:
 	rm -f $(BUILD)/*

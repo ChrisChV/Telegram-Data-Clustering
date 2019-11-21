@@ -8,6 +8,14 @@ News::News(){
     this->language = 0;
 }
 
+News::~News(){
+    this->title.clear();
+    this->title.shrink_to_fit();
+    this->body.clear();
+    this->body.shrink_to_fit();
+    this->meta_tags.clear();
+}
+
 void News::saveMeta(string& property, string& content){
     if(property == Constants::meta_title) this->splitTitle(content);
     else if(property == Constants::meta_time) this->_time = content;

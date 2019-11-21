@@ -8,6 +8,7 @@
 #include "language.h"
 #include "fileManager.h"
 #include "jsonParser.h"
+#include "newsDiscriminator.h"
 
 using namespace std;
 
@@ -27,8 +28,9 @@ class NewsManager{
         void printAllData();
         vector<News *> news_data;
         FileManager * fM;
-        Language * lG;
         Parser * parser;
+        Language * lG;
+        NewsDiscriminator * nD;
         string option;
 
 };

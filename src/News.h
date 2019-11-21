@@ -11,6 +11,7 @@ using namespace std;
 class News{
     public:
         News();
+        ~News();
         void saveMeta(string& property, string& content);
         void printAllData();
         void printTitle();

@@ -3,17 +3,17 @@
 
 #include <iostream>
 #include <unordered_set>
-#include "parser.h"
+#include "News.h"
 
 using namespace std;
 
 class Language{
     public:
         Language();
-        Language(Parser * parser);
         void loadWords();
-        string detectLanguage(News * news);
-        Parser * parser;
+        void clearData();
+        void detectLanguage(News * news);
+        void deleteStopWords(News * news);
         unordered_set<string> russian_words;
         unordered_set<string> english_words;
         vector<News *> english_news;

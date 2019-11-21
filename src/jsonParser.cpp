@@ -22,3 +22,14 @@ void JsonParser::printLanguages(Language * lG){
     cout << temp;
     cout << "]}]";
 }
+
+void JsonParser::printNews(NewsDiscriminator * nD){
+    string temp = "";
+    cout << "{\"articles\": [";
+    for(auto it = nD->news_articles.begin(); it != nD->news_articles.end(); it++){
+        temp += '\"' + (*it)->fileName + "\",";
+    }
+    temp.pop_back();
+    cout << temp;
+    cout << "]}";
+}
