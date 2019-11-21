@@ -1,8 +1,11 @@
 SRC = ./src
 BUILD = $(SRC)/build
+LIBS = ./libs
+DOC2VEC = $(LIBS)/doc2vec/cpp
+DOC2VECLIBS = $(DOC2VEC)/Doc2Vec.o $(DOC2VEC)/NN.o $(DOC2VEC)/TaggedBrownCorpus.o $(DOC2VEC)/TrainModelThread.o $(DOC2VEC)/Vocab.o $(DOC2VEC)/WMD.o
 
-tgnews: $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o $(BUILD)/newsDiscriminator.o
-	g++ -g -o ./tgnews $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o $(BUILD)/newsDiscriminator.o
+tgnews: $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o $(BUILD)/newsDiscriminator.o $(DOC2VECLIBS) $(BUILD)/D2V.o
+	g++ -g -o ./tgnews $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o $(BUILD)/newsDiscriminator.o $(DOC2VECLIBS) $(BUILD)/D2V.o -lpthread
 
 $(BUILD)/main.o: $(SRC)/main.cpp
 	g++ -g -c $(SRC)/main.cpp -o $(BUILD)/main.o
@@ -27,6 +30,9 @@ $(BUILD)/jsonParser.o: $(SRC)/jsonParser.cpp
 
 $(BUILD)/newsDiscriminator.o: $(SRC)/newsDiscriminator.cpp
 	g++ -g -c $(SRC)/newsDiscriminator.cpp -o $(BUILD)/newsDiscriminator.o
+
+$(BUILD)/D2V.o: $(SRC)/D2V.cpp
+	g++ -g -c $(SRC)/D2V.cpp -o $(BUILD)/D2V.o
 
 clean:
 	rm -f $(BUILD)/*

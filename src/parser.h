@@ -15,6 +15,7 @@ class Parser{
         Parser();
         Parser(FileManager * fM);
         void parseData();
+        void parseDataWithoutBatch();
         vector<News *> news_data;
         FileManager * fM;
 

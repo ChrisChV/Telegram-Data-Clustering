@@ -9,6 +9,7 @@
 #include "fileManager.h"
 #include "jsonParser.h"
 #include "newsDiscriminator.h"
+#include "D2V.h"
 
 using namespace std;
 
@@ -31,6 +32,7 @@ class NewsManager{
         Parser * parser;
         Language * lG;
         NewsDiscriminator * nD;
+        D2V * d2v;
         string option;
 
 };

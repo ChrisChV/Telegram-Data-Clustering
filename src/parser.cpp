@@ -21,6 +21,14 @@ void Parser::parseData(){
     }
 }
 
+void Parser::parseDataWithoutBatch(){
+    this->news_data.clear();
+    string name = "only_you.html";
+    for(auto it = this->fM->file_data.begin(); it != this->fM->file_data.end(); it++){
+        this->parse(*it, name);
+    }
+}
+
 void Parser::parse(string& data, string& name){
     char c = 0;
     int state = 0;

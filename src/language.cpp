@@ -12,7 +12,7 @@ Language::Language(){
     this->loadWords();
 }
 
-void Language::detectLanguage(News * news){
+bool Language::detectLanguage(News * news){
     int english = 0;
     int russian = 0;
     int other = 0;
@@ -39,6 +39,7 @@ void Language::detectLanguage(News * news){
     
     if(float(other) / float(total) >= OTHER_THRESHOLD){
         delete news;
+        return false;
     }
     else{
         if(english >= russian){
@@ -50,6 +51,7 @@ void Language::detectLanguage(News * news){
             this->russian_news.push_back(news);
         }
     }
+    return true;
     /*
     if(english >= russian && english >= other){
         news->language = Constants::lang_english_value;
@@ -115,4 +117,25 @@ void Language::deleteStopWords(News * news){
     news->body.clear();
     news->body.shrink_to_fit();
     news->body = new_vec;
+}
+
+void Language::deleteTitleStopWords(News * news){    
+    vector<string> new_vec;
+    if(news->language == Constants::lang_english_value){
+        for(auto it = news->title.begin(); it != news->title.end(); it++){
+            if(this->english_words.find(*it) == this->english_words.end()){
+                new_vec.push_back(*it);
+            }
+        }
+    }
+    else if(news->language == Constants::lang_russian_value){
+        for(auto it = news->title.begin(); it != news->title.end(); it++){
+            if(this->russian_words.find(*it) == this->russian_words.end()){
+                new_vec.push_back(*it);
+            }
+        }
+    }
+    news->title.clear();
+    news->title.shrink_to_fit();
+    news->title = new_vec;
 }

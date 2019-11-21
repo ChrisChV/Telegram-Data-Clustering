@@ -12,8 +12,9 @@ class Language{
         Language();
         void loadWords();
         void clearData();
-        void detectLanguage(News * news);
+        bool detectLanguage(News * news);
         void deleteStopWords(News * news);
+        void deleteTitleStopWords(News * news);
         unordered_set<string> russian_words;
         unordered_set<string> english_words;
         vector<News *> english_news;

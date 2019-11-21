@@ -11,7 +11,10 @@ NewsManager::NewsManager(){
     this->nD = nullptr;
 }
 NewsManager::NewsManager(string& option, string& dirPath){
-    this->fM = new FileManager(dirPath);
+    if(option == Constants::d2v_category_option){
+        this->fM = new FileManager(dirPath, 1);
+    }
+    else this->fM = new FileManager(dirPath);
     this->parser = new Parser(this->fM);
     this->option = option;
     this->lG = nullptr;
@@ -60,6 +63,28 @@ void NewsManager::start(){
         }
         this->jsonparser.printNews(this->nD);
     }
+    else if(option == Constants::d2v_category_option){
+        this->lG = new Language();
+        cout << "Parsing all data" << endl;
+        this->parser->parseDataWithoutBatch();
+        this->fM->clearData();
+        cout << "Detecting Languages" << endl;
+        for(auto it = this->parser->news_data.begin(); 
+                it != this->parser->news_data.end(); it++){
+            if(this->lG->detectLanguage(*it)){
+                this->lG->deleteTitleStopWords(*it);
+            }
+        }
+        cout << "Init Training" << endl;
+        this->d2v = new D2V(this->lG->english_news, true);
+        auto res = this->d2v->getKNNwords("Economy", 10);
+        for(auto it = res.begin(); it != res.end(); it++){
+            cout << (*it).word << " -> " << (*it).similarity << endl;
+        }
+    }
+    else{
+        cout << "The option doesn't exist" << endl;
+    }
 }
 
 void NewsManager::copyParseData(){
@@ -84,3 +109,4 @@ void NewsManager::printAllData(){
         cout << i << endl;
     }
 }
+
