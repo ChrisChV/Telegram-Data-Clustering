@@ -21,6 +21,8 @@ NewsManager::NewsManager(string& option, string& dirPath){
     this->option = option;
     this->lG = nullptr;
     this->nD = nullptr;
+    this->d2v = nullptr;
+    this->classifier = nullptr;
 }
 
 void NewsManager::start(){
@@ -63,7 +65,34 @@ void NewsManager::start(){
             //this->t_end();
             //this->t_start();
         }
+        cout << this->nD->news_english_articles.size() << endl;
+        cout << this->nD->news_russian_articles.size() << endl;
         this->jsonparser.printNews(this->nD);
+    }
+    else if(option == Constants::categories_option){
+        this->lG = new Language();
+        this->nD = new NewsDiscriminator();
+        while(this->fM->nextBatch()){
+            this->parser->parseData();
+            this->lG->clearData();
+            for(auto it = this->parser->news_data.begin(); 
+                    it != this->parser->news_data.end(); it++){
+                this->lG->detectLanguage(*it);
+            }
+            for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
+                this->lG->deleteStopWords(*it);
+                this->nD->discriminate(*it);
+            }
+            for(auto it = this->lG->russian_news.begin(); it != this->lG->russian_news.end(); it++){
+                this->lG->deleteStopWords(*it);
+                this->nD->discriminate(*it);
+            }
+        }
+        this->classifier = new Classifier(this->nD);
+        cout  << this->nD->news_english_articles.size() << endl;
+        cout << this->nD->news_russian_articles.size() << endl;
+        this->classifier->runClassic();
+        this->jsonparser.printCategories(this->classifier);
     }
     else if(option == Constants::d2v_category_option){
         this->lG = new Language();
@@ -79,10 +108,12 @@ void NewsManager::start(){
         }
         cout << "Init Training" << endl;
         this->d2v = new D2V(this->lG->english_news, true, Constants::lang_english_value);
-        this->getCategories();
+        this->classifier = new Classifier();
+        this->classifier->getCategories();
         ofstream outFile(Constants::english_category_words);
         vector<string> actual_words;
-        for(auto it = this->english_categories.begin(); it != this->english_categories.end(); it++){
+        for(auto it = this->classifier->english_categories.begin(); 
+                it != this->classifier->english_categories.end(); it++){
             outFile << "|" << endl;
             outFile << it->first << endl;
             for(auto it2 = it->second.begin(); it2 != it->second.end(); it2++){
@@ -93,11 +124,6 @@ void NewsManager::start(){
             }
         }
         outFile.close();
-
-        auto res = this->d2v->getKNNwords("Economy", 10);
-        for(auto it = res.begin(); it != res.end(); it++){
-            cout << *it << endl;
-        }
     }
     else{
         cout << "The option doesn't exist" << endl;
@@ -125,32 +151,4 @@ void NewsManager::printAllData(){
         actual->printAllData();
         cout << i << endl;
     }
-}
-
-void NewsManager::getCategories(){
-    string line = "";
-    ifstream categoryFile(Constants::english_categories);
-    bool flag = false;
-    string actual_category = "";
-    while(getline(categoryFile, line)){
-        if(line[0] == '-'){
-            flag = true;
-            continue;
-        }
-        if(flag){
-            actual_category = line;
-            this->english_categories[line] = vector<string>();
-            this->english_categories[line].push_back(line);
-            line[0] = tolower(line[0]);
-            this->english_categories[line].push_back(line);
-            flag = false;
-            continue;
-        }
-        else{
-            this->english_categories[actual_category].push_back(line);
-            line[0] = tolower(line[0]);
-            this->english_categories[actual_category].push_back(line);
-        }
-    }
-    categoryFile.close();
 }

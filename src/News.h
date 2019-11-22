@@ -22,6 +22,7 @@ class News{
         string _time;
         string fileName;
         int language;
+        int category;
         map<string, string> meta_tags;
 };
 

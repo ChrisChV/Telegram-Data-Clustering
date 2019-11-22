@@ -11,7 +11,8 @@ class NewsDiscriminator{
         NewsDiscriminator();
         void discriminate(News * news);
         void loadWords();
-        vector<News *> news_articles;
+        vector<News *> news_english_articles;
+        vector<News *> news_russian_articles;
         unordered_set<string> news_english_words;
         unordered_set<string> news_russian_words;
         

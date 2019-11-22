@@ -45,6 +45,12 @@ void NewsDiscriminator::discriminate(News * news){
         }    
     }
     if(float(news_words) / float(total) >= NEWS_THRESHOLD){
-        this->news_articles.push_back(news);
+        if(news->language == Constants::lang_english_value){
+            this->news_english_articles.push_back(news);
+        }
+        else if(news->language == Constants::lang_russian_value){
+            this->news_russian_articles.push_back(news);
+        }
+        
     }
 }

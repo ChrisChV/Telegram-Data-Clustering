@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <locale>
 #include "language.h"
 #include "constants.h"
 
@@ -123,6 +124,8 @@ void Language::deleteTitleStopWords(News * news){
     vector<string> new_vec;
     if(news->language == Constants::lang_english_value){
         for(auto it = news->title.begin(); it != news->title.end(); it++){
+            if((*it).size() == 1) continue;
+            (*it)[0] = tolower((*it)[0], locale("en_US.utf8"));
             if(this->english_words.find(*it) == this->english_words.end()){
                 new_vec.push_back(*it);
             }

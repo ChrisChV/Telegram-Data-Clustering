@@ -11,6 +11,7 @@
 #include "jsonParser.h"
 #include "newsDiscriminator.h"
 #include "D2V.h"
+#include "classifier.h"
 
 using namespace std;
 
@@ -28,15 +29,13 @@ class NewsManager{
         void start();
         void copyParseData();
         void printAllData();
-        void getCategories();
-        vector<News *> news_data;
-        map<string, vector<string>> english_categories;
-        map<string, vector<string>> russian_categories;
+        vector<News *> news_data;   
         FileManager * fM;
         Parser * parser;
         Language * lG;
         NewsDiscriminator * nD;
         D2V * d2v;
+        Classifier * classifier;
         string option;
 
 };

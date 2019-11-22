@@ -19,24 +19,25 @@ namespace Constants{
     const string meta_title = "og:title";
     const string meta_time = "article:published_time";
     const string meta_description = "og:description";
-    const string language_option = "languages";;
+    const string language_option = "languages";
     const string news_option = "news";
+    const string categories_option = "categories";
     const string d2v_category_option = "_d2v_category";
     const int defaultBatchSize = 1000;
     const int lang_other_value = 0;
     const int lang_english_value = 1;
     const int lang_russian_value = 2;
 
-    const int d2v_default_dim = 200;
+    const int d2v_default_dim = 300;
     const int d2v_default_cbow = 1;
     const int d2v_default_hs = 1;
     const int d2v_default_negative = 0;
-    const int d2v_default_iterations = 100;
+    const int d2v_default_iterations = 500;
     const int d2v_default_window = 10;
     const float d2v_default_alpha = 0.025;
     const float d2v_default_sample = 1e-5;
     const int d2v_default_min_cunt = 3;
-    const int d2v_default_threads = 6;
+    const int d2v_default_threads = 7;
 }
 
 
