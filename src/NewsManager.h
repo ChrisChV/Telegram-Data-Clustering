@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include "News.h"
 #include "parser.h"
 #include "language.h"
@@ -27,7 +28,10 @@ class NewsManager{
         void start();
         void copyParseData();
         void printAllData();
+        void getCategories();
         vector<News *> news_data;
+        map<string, vector<string>> english_categories;
+        map<string, vector<string>> russian_categories;
         FileManager * fM;
         Parser * parser;
         Language * lG;

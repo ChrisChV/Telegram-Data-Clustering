@@ -13,6 +13,9 @@ namespace Constants{
     const string news_russian_words_path = "./news_russian_words";
     const string configFilePath = "./tgnews.conf";
     const string d2v_data_file = "./.d2v_data";
+    const string d2v_english_categories = "./dictionaries/test_english_category_title_news";
+    const string english_categories = "./dictionaries/english_main_category_words";
+    const string english_category_words = "./dictionaries/english_all_category_words";
     const string meta_title = "og:title";
     const string meta_time = "article:published_time";
     const string meta_description = "og:description";

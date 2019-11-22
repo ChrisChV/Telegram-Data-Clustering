@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <string>
 #include "NewsManager.h"
 #include "constants.h"
 
@@ -76,10 +78,25 @@ void NewsManager::start(){
             }
         }
         cout << "Init Training" << endl;
-        this->d2v = new D2V(this->lG->english_news, true);
+        this->d2v = new D2V(this->lG->english_news, true, Constants::lang_english_value);
+        this->getCategories();
+        ofstream outFile(Constants::english_category_words);
+        vector<string> actual_words;
+        for(auto it = this->english_categories.begin(); it != this->english_categories.end(); it++){
+            outFile << "|" << endl;
+            outFile << it->first << endl;
+            for(auto it2 = it->second.begin(); it2 != it->second.end(); it2++){
+                actual_words = this->d2v->getKNNwords(*it2, 500);
+                for(auto it3 = actual_words.begin(); it3 != actual_words.end(); it3++){
+                    outFile << *it3 << endl;
+                }
+            }
+        }
+        outFile.close();
+
         auto res = this->d2v->getKNNwords("Economy", 10);
         for(auto it = res.begin(); it != res.end(); it++){
-            cout << (*it).word << " -> " << (*it).similarity << endl;
+            cout << *it << endl;
         }
     }
     else{
@@ -110,3 +127,30 @@ void NewsManager::printAllData(){
     }
 }
 
+void NewsManager::getCategories(){
+    string line = "";
+    ifstream categoryFile(Constants::english_categories);
+    bool flag = false;
+    string actual_category = "";
+    while(getline(categoryFile, line)){
+        if(line[0] == '-'){
+            flag = true;
+            continue;
+        }
+        if(flag){
+            actual_category = line;
+            this->english_categories[line] = vector<string>();
+            this->english_categories[line].push_back(line);
+            line[0] = tolower(line[0]);
+            this->english_categories[line].push_back(line);
+            flag = false;
+            continue;
+        }
+        else{
+            this->english_categories[actual_category].push_back(line);
+            line[0] = tolower(line[0]);
+            this->english_categories[actual_category].push_back(line);
+        }
+    }
+    categoryFile.close();
+}

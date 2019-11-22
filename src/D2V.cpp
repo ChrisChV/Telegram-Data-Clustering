@@ -7,8 +7,8 @@
 using namespace std;
 
 D2V::D2V(){}
-D2V::D2V(vector<News *> & news_vec, bool cat_flag){
-    this->generateFile(news_vec, cat_flag);
+D2V::D2V(vector<News *> & news_vec, bool cat_flag, int language){
+    this->generateFile(news_vec, cat_flag, language);
     this->dim = Constants::d2v_default_dim;
     this->cbow = Constants::d2v_default_cbow;
     this->hs = Constants::d2v_default_hs;
@@ -24,7 +24,7 @@ D2V::D2V(vector<News *> & news_vec, bool cat_flag){
                     this->alpha, this->sample, this->min_count, this->threads);
 }
 
-void D2V::generateFile(vector<News* >& news_vec, bool cat_flag){
+void D2V::generateFile(vector<News* >& news_vec, bool cat_flag, int language){
     int actual_id = 1;
     ofstream outFile(Constants::d2v_data_file);
     for(auto it = news_vec.begin(); it != news_vec.end(); it++){
@@ -34,20 +34,27 @@ void D2V::generateFile(vector<News* >& news_vec, bool cat_flag){
         }
         outFile << endl;
     }
-    if(cat_flag) this->addCategories(outFile, actual_id);
+    if(cat_flag) this->addCategories(outFile, actual_id, language);
     outFile.close();
 }
 
-void D2V::addCategories(ofstream& outFile, int actual_id){
-    outFile << "_*" << to_string(actual_id++) << " Scottish Parliament Rural Economy Committee" << endl;
+void D2V::addCategories(ofstream& outFile, int actual_id, int language){
+    if(language == Constants::lang_english_value){
+        ifstream testCategoriesFile(Constants::d2v_english_categories);
+        string line = "";
+        while(getline(testCategoriesFile, line)){
+            outFile << "_*" << to_string(actual_id++) << " " << line << endl;
+        }
+        testCategoriesFile.close();
+    }
 }
 
-vector<knn_item_t> D2V::getKNNwords(string word, int k){
+vector<string> D2V::getKNNwords(string word, int k){
     knn_item_t items[k];
-    vector<knn_item_t> res;
+    vector<string> res;
     this->d2v.word_knn_words(word.c_str(), items, k);
     for(int i = 0; i < k; i++){
-        res.push_back(items[i]);
+        res.push_back(items[i].word);
     }
     return res;
 }

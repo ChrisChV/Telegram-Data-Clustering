@@ -24,10 +24,10 @@ class D2V{
         int threads;
     public:
         D2V();
-        D2V(vector<News * >& news_vec, bool cat_flag);
-        void generateFile(vector<News *>& news_vec, bool cat_flag);
-        void addCategories(ofstream& outFile, int actual_index);
-        vector<knn_item_t> getKNNwords(string word, int k);
+        D2V(vector<News * >& news_vec, bool cat_flag, int language);
+        void generateFile(vector<News *>& news_vec, bool cat_flag, int language);
+        void addCategories(ofstream& outFile, int actual_index, int language);
+        vector<string> getKNNwords(string word, int k);
 
 };
 
