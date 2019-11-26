@@ -19,10 +19,14 @@ class News{
         vector<string> title;
         vector<string> body;
         vector<string> description;
+        vector<float> similarityVector;
+        vector<News *> news_thread;
         string _time;
         string fileName;
+        string _title;
         int language;
         int category;
+        int _id;
         map<string, string> meta_tags;
 };
 

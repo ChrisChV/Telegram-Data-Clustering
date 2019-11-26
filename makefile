@@ -3,9 +3,10 @@ BUILD = $(SRC)/build
 LIBS = ./libs
 DOC2VEC = $(LIBS)/doc2vec/cpp
 DOC2VECLIBS = $(DOC2VEC)/Doc2Vec.o $(DOC2VEC)/NN.o $(DOC2VEC)/TaggedBrownCorpus.o $(DOC2VEC)/TrainModelThread.o $(DOC2VEC)/Vocab.o $(DOC2VEC)/WMD.o
+APLIBS = $(LIBS)/affinity-propagation-sparse/ap.o
 
-tgnews: $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o $(BUILD)/newsDiscriminator.o $(DOC2VECLIBS) $(BUILD)/D2V.o $(BUILD)/classifier.o
-	g++ -g -o ./tgnews $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o $(BUILD)/newsDiscriminator.o $(DOC2VECLIBS) $(BUILD)/D2V.o $(BUILD)/classifier.o -lpthread
+tgnews: $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o $(BUILD)/newsDiscriminator.o $(DOC2VECLIBS) $(BUILD)/D2V.o $(BUILD)/classifier.o $(BUILD)/threading.o $(APLIBS)
+	g++ -g -o ./tgnews $(BUILD)/main.o $(BUILD)/parser.o $(BUILD)/fileManager.o $(BUILD)/news.o $(BUILD)/newsManager.o $(BUILD)/language.o $(BUILD)/jsonParser.o $(BUILD)/newsDiscriminator.o $(DOC2VECLIBS) $(BUILD)/D2V.o $(BUILD)/classifier.o $(BUILD)/threading.o $(APLIBS) -lpthread
 
 $(BUILD)/main.o: $(SRC)/main.cpp
 	g++ -g -c $(SRC)/main.cpp -o $(BUILD)/main.o
@@ -37,8 +38,8 @@ $(BUILD)/D2V.o: $(SRC)/D2V.cpp
 $(BUILD)/classifier.o: $(SRC)/classifier.cpp
 	g++ -g -c $(SRC)/classifier.cpp -o $(BUILD)/classifier.o
 
+$(BUILD)/threading.o: $(SRC)/threading.cpp
+	g++ -g -c $(SRC)/threading.cpp -o $(BUILD)/threading.o
+
 clean:
 	rm -f $(BUILD)/*
-
-
-

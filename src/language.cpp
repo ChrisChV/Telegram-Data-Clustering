@@ -122,8 +122,11 @@ void Language::deleteStopWords(News * news){
 
 void Language::deleteTitleStopWords(News * news){    
     vector<string> new_vec;
+    news->_title = "";
     if(news->language == Constants::lang_english_value){
         for(auto it = news->title.begin(); it != news->title.end(); it++){
+            if(news->_title.size() == 0) news->_title = (*it);
+            else news->_title += " " + (*it);
             if((*it).size() == 1) continue;
             (*it)[0] = tolower((*it)[0], locale("en_US.utf8"));
             if(this->english_words.find(*it) == this->english_words.end()){
@@ -133,11 +136,13 @@ void Language::deleteTitleStopWords(News * news){
     }
     else if(news->language == Constants::lang_russian_value){
         for(auto it = news->title.begin(); it != news->title.end(); it++){
+            if(news->_title.size() == 0) news->_title = (*it);
+            else news->_title += " " + (*it);
             if(this->russian_words.find(*it) == this->russian_words.end()){
                 new_vec.push_back(*it);
             }
         }
-    }
+    }    
     news->title.clear();
     news->title.shrink_to_fit();
     news->title = new_vec;

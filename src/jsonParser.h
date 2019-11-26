@@ -5,6 +5,7 @@
 #include "language.h"
 #include "newsDiscriminator.h"
 #include "classifier.h"
+#include "threading.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ class JsonParser{
         void printLanguages(Language * lG);
         void printNews(NewsDiscriminator * nD);
         void printCategories(Classifier * classifier);
+        void printThreads(Threading * threading);
 };
 
 #endif

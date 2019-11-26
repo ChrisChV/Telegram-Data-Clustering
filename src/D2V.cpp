@@ -4,6 +4,7 @@
 #include "D2V.h"
 #include "constants.h"
 
+
 using namespace std;
 
 D2V::D2V(){}
@@ -25,7 +26,7 @@ D2V::D2V(vector<News *> & news_vec, bool cat_flag, int language){
 }
 
 void D2V::generateFile(vector<News* >& news_vec, bool cat_flag, int language){
-    int actual_id = 1;
+    int actual_id = 0;
     ofstream outFile(Constants::d2v_data_file);
     for(auto it = news_vec.begin(); it != news_vec.end(); it++){
         outFile << "_*" << to_string(actual_id++);
@@ -57,4 +58,44 @@ vector<string> D2V::getKNNwords(string word, int k){
         res.push_back(items[i].word);
     }
     return res;
+}
+
+void D2V::buildDoc(TaggedDocument * doc, vector<string> & words){
+    doc->m_word_num = words.size() + 1;
+    int i = 0;
+    for(; i < words.size(); i++){
+        strcpy(doc->m_words[i], words[i].c_str());
+    }
+    strcpy(doc->m_words[i], "</s>");
+}
+
+int D2V::getId(char * word){
+    word += 2;
+    return atoi(word);
+}
+
+void D2V::generateSimilarityMatrix(vector<News *>& news_vec){
+    int i = 0;    
+    for(auto it = news_vec.begin(); it != news_vec.end(); it++){
+        this->getKNNdocs(*it, news_vec.size(), i++);
+    }
+}
+
+void D2V::getKNNdocs(News * news, int k, int doc_id){
+    int actual_id = 0;
+    TaggedDocument newDoc;
+    knn_item_t items[k];
+    news->similarityVector = vector<float>(k, 0);
+    news->_id = doc_id;
+    this->buildDoc(&newDoc, news->title);
+    float * infer_vector = NULL;
+    
+    posix_memalign((void **)&infer_vector, 128, this->d2v.dim() * sizeof(float));
+    this->d2v.sent_knn_docs(&newDoc, items, k, infer_vector);
+    for(int i = 0; i < k; i++){
+        actual_id = this->getId(items[i].word);
+        news->similarityVector[actual_id] = items[i].similarity;
+        
+    }    
+    free(infer_vector);
 }

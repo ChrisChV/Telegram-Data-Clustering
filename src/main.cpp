@@ -1,9 +1,30 @@
 #include <iostream>
+#include <stdarg.h>
 #include "NewsManager.h"
 #include "../libs/doc2vec/cpp/TaggedBrownCorpus.h"
 #include "../libs/doc2vec/cpp/Doc2Vec.h"
 
 using namespace std;
+
+/*
+void buildDoc(TaggedDocument * doc, ...)
+{
+  va_list pArg;
+  va_start(pArg, doc);
+  for(int i = 0; i < doc->m_word_num; i++){
+    strcpy(doc->m_words[i], va_arg(pArg, char*));
+  }
+  va_end(pArg);
+}
+
+void buildDoc(TaggedDocument * doc, vector<string> & words){
+    doc->m_word_num = words.size() + 1;
+    int i = 0;
+    for(; i < words.size(); i++){
+        strcpy(doc->m_words[i], words[i].c_str());
+    }
+    strcpy(doc->m_words[i], "</s>");
+}*/
 
 
 int main(int argc, char ** argv){
@@ -21,21 +42,32 @@ int main(int argc, char ** argv){
     return 0;
 }
 
+
 /*
 int main(){
     Doc2Vec d2v;
-    d2v.train(".d2v_data", 100, 0, 1, 0, 15, 10, 0.025, 1e-5, 4, 6);
-    knn_item_t items[20];
+    d2v.train(".d2v_data", 300, 1, 1, 0, 500, 10, 0.025, 1e-5, 3, 7);
+    knn_item_t items[2000];
     TaggedDocument myDoc;
-    myDoc.m_word_num = 3;
+    float * infer_vector = NULL;
+    posix_memalign((void **)&infer_vector, 128, d2v.dim() * sizeof(float)); 
+    vector<string> words = {"Chile", "police", "stopped", "rescue", "workers", "helping", "dying", "protester:", "human", "rights"};
+    buildDoc(&myDoc, words);
+    d2v.sent_knn_docs(&myDoc, items, 20, infer_vector);
+
+
     
-    d2v.word_knn_words("Economy", items, 20);
-    //d2v.doc_knn_docs("_*23134_Distributed_Representations_of_Sentences_and_Documents", items, 3);
+    //d2v.word_knn_words("economy", items, 20);
+    char * word = nullptr;
+    int id = 0;
+    //d2v.doc_knn_docs("_*34155 sweden detains iranian suspicion murder iran", items, 3);
     for(int i = 0; i < 20; i++){
-        cout<< items[i].word << " -> " << items[i].similarity << " -> " << items[i].idx << endl;
+        word = items[i].word;
+        word += 2;
+        id = atoi(word);
+        cout<< id << " -> " << items[i].similarity << " -> " << items[i].idx << endl;
     }
     return 0;
-}
-*/
+}*/
 
 

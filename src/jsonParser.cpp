@@ -53,3 +53,21 @@ void JsonParser::printCategories(Classifier * classifier){
     }
     cout << "]";
 }
+
+void JsonParser::printThreads(Threading * threading){
+    cout << "[";
+    int i = 0;
+    string temp = "";
+    for(auto it = threading->news_threads.begin(); it != threading->news_threads.end(); it++){
+        for(auto it2 = (*it).begin(); it2 != (*it).end(); it2++){
+            cout << "{\"title\": \"" << (*it2)->_title << "\",";
+            cout << "\"articles\": [";
+            temp = "";
+            for(auto it3 = (*it2)->news_thread.begin(); it3 != (*it2)->news_thread.end(); it3++){
+                temp += "\"" + (*it3)->fileName + "\",";
+            }
+            cout << temp << "]},";
+        }
+    }
+    cout << "]";
+}

@@ -12,6 +12,7 @@
 #include "newsDiscriminator.h"
 #include "D2V.h"
 #include "classifier.h"
+#include "threading.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ class NewsManager{
         NewsDiscriminator * nD;
         D2V * d2v;
         Classifier * classifier;
+        Threading * tH;
         string option;
 
 };

@@ -13,6 +13,7 @@ namespace Constants{
     const string news_russian_words_path = "./news_russian_words";
     const string configFilePath = "./tgnews.conf";
     const string d2v_data_file = "./.d2v_data";
+    const string d2v_similarity_file = "./.d2v_similarity_data";
     const string d2v_english_categories = "./dictionaries/test_english_category_title_news";
     const string english_categories = "./dictionaries/english_main_category_words";
     const string english_category_words = "./dictionaries/english_all_category_words";
@@ -22,17 +23,18 @@ namespace Constants{
     const string language_option = "languages";
     const string news_option = "news";
     const string categories_option = "categories";
+    const string threads_option = "threads";
     const string d2v_category_option = "_d2v_category";
     const int defaultBatchSize = 1000;
     const int lang_other_value = 0;
     const int lang_english_value = 1;
     const int lang_russian_value = 2;
 
-    const int d2v_default_dim = 300;
+    const int d2v_default_dim = 1000;
     const int d2v_default_cbow = 1;
     const int d2v_default_hs = 1;
     const int d2v_default_negative = 0;
-    const int d2v_default_iterations = 500;
+    const int d2v_default_iterations = 10000;
     const int d2v_default_window = 10;
     const float d2v_default_alpha = 0.025;
     const float d2v_default_sample = 1e-5;
