@@ -35,13 +35,15 @@ namespace Constants{
     const int lang_english_value = 1;
     const int lang_russian_value = 2;
 
-    const int d2v_default_dim = 1000;
+    //const int d2v_default_dim = 1000;
     //const int d2v_default_dim = 300;
+    const int d2v_default_dim = 1000;
     const int d2v_default_cbow = 1;
     const int d2v_default_hs = 1;
     const int d2v_default_negative = 0;
-    const int d2v_default_iterations = 10000;
+    //const int d2v_default_iterations = 10000;
     //const int d2v_default_iterations = 500;
+    const int d2v_default_iterations = 1700;
     const int d2v_default_window = 10;
     const float d2v_default_alpha = 0.025;
     const float d2v_default_sample = 1e-5;

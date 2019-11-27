@@ -6,7 +6,7 @@
 using namespace std;
 
 const int WORD_NUMBER_THRESHOLD = 40;
-const float NEWS_THRESHOLD = 0.5;
+const float NEWS_THRESHOLD = 0.2;
 
 NewsDiscriminator::NewsDiscriminator(){
     this->loadWords();

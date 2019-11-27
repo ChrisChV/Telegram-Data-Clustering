@@ -49,11 +49,11 @@ void NewsManager::start(){
                 this->lG->detectLanguage(*it);
             }
             for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
-                this->lG->deleteStopWords(*it);
+                this->lG->deleteTitleStopWords(*it);
                 this->nD->discriminate(*it);
             }
             for(auto it = this->lG->russian_news.begin(); it != this->lG->russian_news.end(); it++){
-                this->lG->deleteStopWords(*it);
+                this->lG->deleteTitleStopWords(*it);
                 this->nD->discriminate(*it);
             }
         }
@@ -70,11 +70,11 @@ void NewsManager::start(){
                 this->lG->detectLanguage(*it);
             }
             for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
-                this->lG->deleteStopWords(*it);
+                this->lG->deleteTitleStopWords(*it);
                 this->nD->discriminate(*it);
             }
             for(auto it = this->lG->russian_news.begin(); it != this->lG->russian_news.end(); it++){
-                this->lG->deleteStopWords(*it);
+                this->lG->deleteTitleStopWords(*it);
                 this->nD->discriminate(*it);
             }
         }
