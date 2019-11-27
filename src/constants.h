@@ -5,12 +5,12 @@
 using namespace std;
 
 namespace Constants{
-    const string russian_sw_path = "./stopwords-russian";
-    const string english_sw_path = "./stopwords-english";
-    const string russian_words_path = "./words_russian";
-    const string english_words_path = "./words_english";
-    const string news_english_words_path = "./news_english_words";
-    const string news_russian_words_path = "./news_russian_words";
+    const string russian_sw_path = "./dictionaries/stopwords-russian";
+    const string english_sw_path = "./dictionaries/stopwords-english";
+    const string russian_words_path = "./dictionaries/words_russian";
+    const string english_words_path = "./dictionaries/words_english";
+    const string news_english_words_path = "./dictionaries/news_english_words";
+    const string news_russian_words_path = "./dictionaries/news_russian_words";
     const string configFilePath = "./tgnews.conf";
     const string d2v_data_file = "./.d2v_data";
     const string d2v_similarity_file = "./.d2v_similarity_data";
