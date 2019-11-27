@@ -1,4 +1,5 @@
 #include <iostream>
+#include <locale>
 #include "classifier.h"
 #include "constants.h"
 
@@ -41,7 +42,6 @@ void Classifier::runClassic(){
                     it3 != this->english_category_words.end(); it3++){
                 if(it3->second.find(*it2) != it3->second.end()){
                     points[it3->first]++;
-                    
                 }
             }
         }
@@ -59,6 +59,33 @@ void Classifier::runClassic(){
         else (*it)->category = this->_category_si["other"];
         categorized_news[(*it)->category].push_back(*it);
     }
+
+    for(auto it = this->nD->news_russian_articles.begin();
+            it != this->nD->news_russian_articles.end(); it++){
+        points = _temp;
+        for(auto it2 = (*it)->title.begin(); it2 != (*it)->title.end(); it2++){
+            for(auto it3 = this->russian_category_words.begin();
+                    it3 != this->russian_category_words.end(); it3++){
+                if(it3->second.find(*it2) != it3->second.end()){
+                    points[it3->first]++;
+                }
+            }
+        }
+        actual_max = nullptr;
+        max = -1;
+        for(auto it3 = points.begin(); it3 != points.end(); it3++){
+            if(it3->second > 0 && it3->second > max){
+                max = it3->second;
+                actual_max = &it3->first;
+            }
+        }
+        if(actual_max){
+            (*it)->category = this->_category_si[*actual_max];
+        }
+        else (*it)->category = this->_category_si["other"];
+        categorized_news[(*it)->category].push_back(*it);
+    }
+
 }
 
 void Classifier::getCategoriesWords(){
@@ -83,6 +110,25 @@ void Classifier::getCategoriesWords(){
         }
     }
     inFile.close();
+    inFile.open(Constants::russian_category_words);
+    flag = false;
+    while(getline(inFile, line)){
+        if(line[0] == '|'){
+            flag = true;
+            continue;
+        }
+        if(flag){
+            actual_category = line;
+            this->russian_category_words[line] = unordered_set<string>();
+            this->russian_category_words[line].insert(line);
+            flag = false;
+            continue;
+        }
+        else{
+            this->russian_category_words[actual_category].insert(line);
+        }
+    }
+    inFile.close();
 }
 
 void Classifier::getCategories(){
@@ -97,7 +143,7 @@ void Classifier::getCategories(){
             continue;
         }
         if(flag){
-            line[0] = tolower(line[0]);
+            line[0] = tolower(line[0], locale("en_US.utf8"));
             actual_category = line;
             this->english_categories[line] = vector<string>();
             this->english_categories[line].push_back(line);
@@ -108,7 +154,7 @@ void Classifier::getCategories(){
             continue;
         }
         else{
-            line[0] = tolower(line[0]);
+            line[0] = tolower(line[0], locale("en_US.utf8"));
             this->english_categories[actual_category].push_back(line);
         }
     }
@@ -116,5 +162,23 @@ void Classifier::getCategories(){
     this->_category_si["other"] = actual_id++;
     this->_category_is.push_back("other");
     this->categorized_news.push_back(vector<News *>());
-
+    categoryFile.open(Constants::russian_categories);
+    flag = false;
+    while(getline(categoryFile, line)){
+        if(line[0] == '-'){
+            flag = true;
+            continue;
+        }
+        if(flag){
+            actual_category = line;
+            this->russian_categories[actual_category] = vector<string>();
+            this->russian_categories[actual_category].push_back(line);
+            flag = false;
+            continue;
+        }
+        else{
+            this->russian_categories[actual_category].push_back(line);
+        }
+    }
+    categoryFile.close();
 }

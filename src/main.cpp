@@ -1,5 +1,8 @@
 #include <iostream>
 #include <stdarg.h>
+#include <locale>
+#include <string>
+#include <algorithm>
 #include "NewsManager.h"
 #include "../libs/doc2vec/cpp/TaggedBrownCorpus.h"
 #include "../libs/doc2vec/cpp/Doc2Vec.h"
@@ -70,4 +73,10 @@ int main(){
     return 0;
 }*/
 
-
+/*
+int main(){
+    wstring a = L"Политика";
+    a[0] = towlower(a[0]);
+    wcout << a << endl;
+}
+*/

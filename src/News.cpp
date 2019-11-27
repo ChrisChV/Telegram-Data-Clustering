@@ -13,7 +13,7 @@ News::~News(){
     this->title.shrink_to_fit();
     this->body.clear();
     this->body.shrink_to_fit();
-    this->meta_tags.clear();
+    this->meta_tags.clear();    
 }
 
 void News::saveMeta(string& property, string& content){

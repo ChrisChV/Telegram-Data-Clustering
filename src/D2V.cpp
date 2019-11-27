@@ -48,6 +48,14 @@ void D2V::addCategories(ofstream& outFile, int actual_id, int language){
         }
         testCategoriesFile.close();
     }
+    else if(language == Constants::lang_russian_value){
+        ifstream testCategoriesFile(Constants::d2v_russian_categories);
+        string line = "";
+        while(getline(testCategoriesFile, line)){
+            outFile << "_*" << to_string(actual_id++) << " " << line << endl;
+        }
+        testCategoriesFile.close();
+    }
 }
 
 vector<string> D2V::getKNNwords(string word, int k){

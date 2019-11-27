@@ -138,6 +138,8 @@ void Language::deleteTitleStopWords(News * news){
         for(auto it = news->title.begin(); it != news->title.end(); it++){
             if(news->_title.size() == 0) news->_title = (*it);
             else news->_title += " " + (*it);
+            if((*it).size() == 1) continue;
+            //(*it)[0] = tolower((*it)[0], locale("ru_RU.utf8"));
             if(this->russian_words.find(*it) == this->russian_words.end()){
                 new_vec.push_back(*it);
             }

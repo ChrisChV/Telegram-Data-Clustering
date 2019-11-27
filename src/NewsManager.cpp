@@ -153,7 +153,7 @@ void NewsManager::start(){
                 this->lG->deleteTitleStopWords(*it);
             }
         }
-        cout << "Init Training" << endl;
+        cout << "Init English Training" << endl;
         this->d2v = new D2V(this->lG->english_news, true, Constants::lang_english_value);
         this->classifier = new Classifier();
         this->classifier->getCategories();
@@ -171,6 +171,23 @@ void NewsManager::start(){
             }
         }
         outFile.close();
+        delete this->d2v;
+        outFile.open(Constants::russian_category_words);
+        this->d2v = new D2V(this->lG->russian_news, true, Constants::lang_russian_value);
+        for(auto it = this->classifier->russian_categories.begin();
+                it != this->classifier->russian_categories.end(); it++){
+            outFile << "|" << endl;
+            outFile << it->first << endl;
+            for(auto it2 = it->second.begin(); it2 != it->second.end(); it2++){
+                actual_words = this->d2v->getKNNwords(*it2, 500);
+                for(auto it3 = actual_words.begin(); it3 != actual_words.end(); it3++){
+                    outFile << *it3 << endl;
+                }
+            }
+        }
+        outFile.close();
+        actual_words.clear();
+        actual_words.shrink_to_fit();
     }
     else{
         cout << "The option doesn't exist" << endl;
