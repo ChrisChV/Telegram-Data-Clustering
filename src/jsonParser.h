@@ -16,6 +16,7 @@ class JsonParser{
         void printNews(NewsDiscriminator * nD);
         void printCategories(Classifier * classifier);
         void printThreads(Threading * threading);
+        void printTop(Threading * threading, Classifier * classifier);
 };
 
 #endif

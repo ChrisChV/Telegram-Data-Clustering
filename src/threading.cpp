@@ -34,6 +34,7 @@ void Threading::run(){
             if(find_examplar.find(*it2) == find_examplar.end()){
                 find_examplar[*it2] = (*it)[*it2];
                 this->news_threads.back().push_back((*it)[*it2]);
+                this->all_news_threads.push_back((*it)[*it2]);
                 continue;
             }
             find_examplar[*it2]->news_thread.push_back((*it)[actual_index++]);
@@ -53,7 +54,17 @@ void Threading::run(){
             }
         }
     }
-    
+}
 
-
+void Threading::threadingSort(){
+    sort(this->all_news_threads.begin(), this->all_news_threads.end(), 
+            [](News * a, News * b){
+                return a->news_thread.size() > b->news_thread.size();
+            });
+    for(auto it = this->news_threads.begin(); it != this->news_threads.end(); it++){
+        sort((*it).begin(), (*it).end(), 
+                [](News * a, News * b){
+                    return a->news_thread.size() > b->news_thread.size();
+                });
+    }
 }

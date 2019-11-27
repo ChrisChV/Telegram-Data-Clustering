@@ -24,6 +24,7 @@ namespace Constants{
     const string news_option = "news";
     const string categories_option = "categories";
     const string threads_option = "threads";
+    const string top_option = "top";
     const string d2v_category_option = "_d2v_category";
     const int defaultBatchSize = 1000;
     const int lang_other_value = 0;

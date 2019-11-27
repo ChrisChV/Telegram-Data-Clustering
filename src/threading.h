@@ -12,9 +12,11 @@ class Threading{
         Threading();
         Threading(Classifier * classifier);
         void run();
+        void threadingSort();
         D2V * d2v;
         Classifier * classifier;
         vector<vector<News *>> news_threads;
+        vector<News *> all_news_threads;
 };
 
 #endif

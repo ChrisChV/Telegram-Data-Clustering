@@ -65,8 +65,6 @@ void NewsManager::start(){
             //this->t_end();
             //this->t_start();
         }
-        cout << this->nD->news_english_articles.size() << endl;
-        cout << this->nD->news_russian_articles.size() << endl;
         this->jsonparser.printNews(this->nD);
     }
     else if(option == Constants::categories_option){
@@ -116,6 +114,32 @@ void NewsManager::start(){
         this->tH = new Threading(this->classifier);
         this->tH->run();
         this->jsonparser.printThreads(this->tH);
+    }
+    else if(option == Constants::top_option){
+        this->lG = new Language();
+        this->nD = new NewsDiscriminator();
+        while(this->fM->nextBatch()){
+            this->parser->parseData();
+            this->lG->clearData();
+            for(auto it = this->parser->news_data.begin(); 
+                    it != this->parser->news_data.end(); it++){
+                this->lG->detectLanguage(*it);
+            }
+            for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
+                this->lG->deleteTitleStopWords(*it);
+                this->nD->discriminate(*it);
+            }
+            for(auto it = this->lG->russian_news.begin(); it != this->lG->russian_news.end(); it++){
+                this->lG->deleteTitleStopWords(*it);
+                this->nD->discriminate(*it);
+            }
+        }
+        this->classifier = new Classifier(this->nD);    
+        this->classifier->runClassic();
+        this->tH = new Threading(this->classifier);
+        this->tH->run();
+        this->tH->threadingSort();
+        this->jsonparser.printTop(this->tH, this->classifier);
     }
     else if(option == Constants::d2v_category_option){
         this->lG = new Language();
