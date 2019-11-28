@@ -22,8 +22,7 @@ Parser::~Parser(){
 void Parser::parseData(){
     this->news_data.clear(); 
     for(int i = 0; i < this->fM->file_data.size(); i++){
-        this->parse(this->fM->file_data[i],
-             this->fM->file_names[i + this->fM->batch_size * this->fM->actual_batch]);
+        this->parse(this->fM->file_data[i], this->fM->getFileName(i));
     }
 }
 
@@ -35,7 +34,7 @@ void Parser::parseDataWithoutBatch(){
     }
 }
 
-void Parser::parse(string& data, string& name){
+void Parser::parse(string& data, string name){
     char c = 0;
     int state = 0;
     string tag = "";

@@ -28,6 +28,7 @@ NewsManager::NewsManager(string& option, string& dirPath){
 void NewsManager::start(){
     string temp = "";
     if(option == Constants::language_option){
+        this->t_start();
         this->lG = new Language();
         while(this->fM->nextBatch()){
             this->parser->parseData();
@@ -37,7 +38,7 @@ void NewsManager::start(){
             }
         }
         this->jsonparser.printLanguages(this->lG);
-        //this->lG->printAll();
+        this->t_end();
     }
     else if(option == Constants::news_option){
         this->lG = new Language();

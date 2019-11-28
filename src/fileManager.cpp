@@ -13,6 +13,7 @@ FileManager::FileManager(string& dirPath){
     this->batch_size = Constants::defaultBatchSize;
     this->actual_batch = -1;
     this->dirPath = dirPath;
+    if(dirPath.back() != '/') dirPath.push_back('/');
     this->listFiles(dirPath);
 }
 FileManager::FileManager(string& dirPath, int flag){
@@ -52,8 +53,8 @@ void FileManager::loadAllData(){
     }
 }
 
-void FileManager::getData(string& fileName){
-    string filePath = this->dirPath + '/' + fileName;
+
+void FileManager::getData(string& filePath){
     ifstream file(filePath);
     string data( (istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()) );
     this->file_data.push_back(data);
@@ -71,17 +72,20 @@ string FileManager::getFileNumber(string& filePath){
             actual = "";
             continue;
         }
-        else if(c == '.') return actual;
+        else if(c == '.') return actual + ".html";
         if(flag) actual.push_back(c);
     }
     return "";
 }
 
-void FileManager::listFiles(string& dirPath) {
+string FileManager::getFileName(int index){
+    return this->getFileNumber(this->file_names[index + this->batch_size * this->actual_batch]);
+}
+
+void FileManager::listFiles(string & dirPath){
     struct dirent *entry;
     DIR *dir = opendir(dirPath.c_str());
     string fileName = "";
-
 
     if (dir == NULL) {
         return;
@@ -89,7 +93,13 @@ void FileManager::listFiles(string& dirPath) {
     while ((entry = readdir(dir)) != NULL) {
         fileName = entry->d_name;
         if(fileName == "." || fileName == "..") continue;
-        this->file_names.push_back(fileName);
+        if(verifyHtmlExtension(fileName)){
+            this->file_names.push_back(dirPath + "/" + fileName);
+        }
+        else{
+            fileName = dirPath + "/" + fileName;
+            this->listFiles(fileName);
+        }
     }
     closedir(dir);
 }
@@ -132,4 +142,16 @@ void FileManager::listFilesRecur(string& dirPath){
         }
         vec_date_dirs.clear();
     }
+}
+
+bool FileManager::verifyHtmlExtension(string& fileName){
+    bool flag = false;
+    string extension = "";
+    for(char c : fileName){
+        if(c == '.') flag = true;
+        else if(flag){
+            extension.push_back(c);
+        }
+    }
+    return extension == Constants::htmlExtension;
 }

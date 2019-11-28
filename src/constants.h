@@ -5,6 +5,8 @@
 using namespace std;
 
 namespace Constants{
+    const string htmlExtension = "html";
+
     const string russian_sw_path = "./dictionaries/stopwords-russian";
     const string english_sw_path = "./dictionaries/stopwords-english";
     const string russian_words_path = "./dictionaries/words_russian";

@@ -10,7 +10,7 @@ using namespace std;
 
 class Parser{
     private:
-        void parse(string& data, string& name);
+        void parse(string& data, string name);
     public:
         Parser();
         ~Parser();

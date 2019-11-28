@@ -25,6 +25,8 @@ class FileManager{
         void printActualBatch();
         void listFilesRecur(string& dirPath);
         void clearData();
+        bool verifyHtmlExtension(string& fileName);
+        string getFileName(int index);
         string getFileNumber(string& filePath);
         
 
