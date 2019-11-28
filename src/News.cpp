@@ -12,15 +12,13 @@ News::~News(){
     this->title.clear();
     this->title.shrink_to_fit();
     this->body.clear();
-    this->body.shrink_to_fit();
-    this->meta_tags.clear();    
+    this->body.shrink_to_fit();  
 }
 
 void News::saveMeta(string& property, string& content){
     if(property == Constants::meta_title) this->splitTitle(content);
     else if(property == Constants::meta_time) this->_time = content;
-    else if(property == Constants::meta_description) this->description.push_back(content);
-    else this->meta_tags[property] = content;
+    //else if(property == Constants::meta_description) this->description.push_back(content);
 }
 
 void News::splitTitle(string& title){
@@ -51,23 +49,6 @@ void News::printAllData(){
     cout << "Time: ";
     if(this->_time == "") cout << "No time" << endl;
     else cout << this->_time << endl;
-    cout << "Description " << endl;
-    if(this->description.size() == 0) cout << "No description" << endl;
-    else{
-        for(int i = 0; i < this->description.size(); i++){
-            word = this->description[i];
-            cout << word << " ";
-        }
-        cout << endl;
-    }
-    cout << "Meta tags: " << endl;
-    if(this->meta_tags.size() == 0) cout << "No metas" << endl;
-    else{
-        map<string,string>::iterator it;
-        for(it = this->meta_tags.begin(); it != this->meta_tags.end(); it++){
-            cout << it->first << " " << it->second << endl;
-        }
-    }
     cout << "Body: " << endl;
     if(this->body.size() == 0) cout << "No body" << endl;
     else{

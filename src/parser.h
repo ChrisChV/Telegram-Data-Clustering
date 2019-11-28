@@ -13,6 +13,7 @@ class Parser{
         void parse(string& data, string& name);
     public:
         Parser();
+        ~Parser();
         Parser(FileManager * fM);
         void parseData();
         void parseDataWithoutBatch();

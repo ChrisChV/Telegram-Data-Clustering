@@ -15,8 +15,21 @@ void JsonParser::printLanguages(Language * lG){
     for(auto it = lG->russian_news.begin(); it != lG->russian_news.end(); it++){
         cout << '\"' << (*it)->fileName << "\"";
         if(it + 1 != lG->russian_news.end()) cout << ',';
-     }
-    cout << "]}]";
+    }
+    cout << "]}";
+    if(lG->other_news.size() != 0) cout << ",";
+    for(auto it = lG->other_news.begin(); it != lG->other_news.end(); it++){
+        cout << "{\"lang_code\": \"" << it->first << "\", \"articles\": [";
+        for(auto it2 = it->second.begin(); it2 != it->second.end(); it2++){
+            cout << "\"" << (*it2)->fileName << "\"";
+            if(it2 + 1 != it->second.end()) cout << ",";
+        }
+        cout << "]}";
+        it++;
+        if(it != lG->other_news.end()) cout << ",";
+        it--;
+    }
+    cout << "]";
 }
 
 void JsonParser::printNews(NewsDiscriminator * nD){

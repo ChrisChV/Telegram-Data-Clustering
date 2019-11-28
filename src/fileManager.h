@@ -11,6 +11,7 @@ class FileManager{
         string dirPath;
     public:
         FileManager();
+        ~FileManager();
         FileManager(string& dirPath);
         FileManager(string& dirPath, int flag);
         int batch_size;

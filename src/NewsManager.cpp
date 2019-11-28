@@ -33,10 +33,11 @@ void NewsManager::start(){
             this->parser->parseData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
-                this->lG->detectLanguage(*it);
+                this->lG->detectLanguageLib(*it, true);
             }
         }
         this->jsonparser.printLanguages(this->lG);
+        //this->lG->printAll();
     }
     else if(option == Constants::news_option){
         this->lG = new Language();
@@ -46,7 +47,7 @@ void NewsManager::start(){
             this->lG->clearData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
-                this->lG->detectLanguage(*it);
+                this->lG->detectLanguageLib(*it, true);
             }
             for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
@@ -67,7 +68,7 @@ void NewsManager::start(){
             this->lG->clearData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
-                this->lG->detectLanguage(*it);
+                this->lG->detectLanguageLib(*it, true);
             }
             for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
@@ -90,7 +91,7 @@ void NewsManager::start(){
             this->lG->clearData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
-                this->lG->detectLanguage(*it);
+                this->lG->detectLanguageLib(*it, true);
             }
             for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
@@ -115,7 +116,7 @@ void NewsManager::start(){
             this->lG->clearData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
-                this->lG->detectLanguage(*it);
+                this->lG->detectLanguageLib(*it, true);
             }
             for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
@@ -141,7 +142,7 @@ void NewsManager::start(){
         cout << "Detecting Languages" << endl;
         for(auto it = this->parser->news_data.begin(); 
                 it != this->parser->news_data.end(); it++){
-            if(this->lG->detectLanguage(*it)){
+            if(this->lG->detectLanguageLib(*it, true)){
                 this->lG->deleteTitleStopWords(*it);
             }
         }

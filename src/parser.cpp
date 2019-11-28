@@ -13,6 +13,12 @@ Parser::Parser(FileManager * fM){
     this->fM = fM;
 }
 
+Parser::~Parser(){
+    for(auto it = this->news_data.begin(); it != this->news_data.end(); it++){
+        if(*it) delete (*it);
+    }
+}
+
 void Parser::parseData(){
     this->news_data.clear(); 
     for(int i = 0; i < this->fM->file_data.size(); i++){
@@ -23,7 +29,7 @@ void Parser::parseData(){
 
 void Parser::parseDataWithoutBatch(){
     this->news_data.clear();
-    string name = "only_you.html";
+    string name = "";
     for(auto it = this->fM->file_data.begin(); it != this->fM->file_data.end(); it++){
         this->parse(*it, name);
     }

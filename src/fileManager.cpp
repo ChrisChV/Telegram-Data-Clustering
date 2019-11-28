@@ -20,6 +20,9 @@ FileManager::FileManager(string& dirPath, int flag){
         this->listFilesRecur(dirPath);
     }
 }
+FileManager::~FileManager(){
+    this->clearData();
+}
 
 bool FileManager::nextBatch(){
     int actual_index = 0;
