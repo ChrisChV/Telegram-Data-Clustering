@@ -48,7 +48,7 @@ namespace Constants{
     const float d2v_default_alpha = 0.025;
     const float d2v_default_sample = 1e-5;
     const int d2v_default_min_cunt = 3;
-    const int d2v_default_threads = 7;
+    const int d2v_default_threads = 8;
 }
 
 

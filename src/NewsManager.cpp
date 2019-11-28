@@ -152,6 +152,7 @@ void NewsManager::start(){
         this->classifier->getCategories();
         ofstream outFile(Constants::english_category_words);
         vector<string> actual_words;
+        cout << "Get English Words" << endl;
         for(auto it = this->classifier->english_categories.begin(); 
                 it != this->classifier->english_categories.end(); it++){
             outFile << "|" << endl;
@@ -165,8 +166,10 @@ void NewsManager::start(){
         }
         outFile.close();
         delete this->d2v;
+        cout << "Init Russian Training" << endl;
         outFile.open(Constants::russian_category_words);
         this->d2v = new D2V(this->lG->russian_news, true, Constants::lang_russian_value);
+        cout << "Get Russian Words" << endl;
         for(auto it = this->classifier->russian_categories.begin();
                 it != this->classifier->russian_categories.end(); it++){
             outFile << "|" << endl;
