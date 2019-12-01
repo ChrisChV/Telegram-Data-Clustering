@@ -9,7 +9,7 @@ using namespace std;
 class NewsDiscriminator{
    public:
         NewsDiscriminator();
-        void discriminate(News * news);
+        bool discriminate(News * news);
         void loadWords();
         vector<News *> news_english_articles;
         vector<News *> news_russian_articles;

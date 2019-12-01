@@ -3,7 +3,6 @@
 #include "constants.h"
 
 News::News(){
-    this->_time = "";
     this->fileName = "";
     this->language = 0;
 }
@@ -15,9 +14,14 @@ News::~News(){
     this->body.shrink_to_fit();  
 }
 
+void News::clearBody(){
+    this->body.clear();
+    this->body.shrink_to_fit();
+}
+
 void News::saveMeta(string& property, string& content){
     if(property == Constants::meta_title) this->splitTitle(content);
-    else if(property == Constants::meta_time) this->_time = content;
+    //else if(property == Constants::meta_time) this->_time = content;
     //else if(property == Constants::meta_description) this->description.push_back(content);
 }
 
@@ -45,10 +49,7 @@ void News::printAllData(){
             cout << word << " ";
         }
         cout << endl;
-    }
-    cout << "Time: ";
-    if(this->_time == "") cout << "No time" << endl;
-    else cout << this->_time << endl;
+    }    
     cout << "Body: " << endl;
     if(this->body.size() == 0) cout << "No body" << endl;
     else{

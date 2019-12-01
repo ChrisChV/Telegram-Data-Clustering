@@ -26,8 +26,11 @@ void NewsDiscriminator::loadWords(){
     file.close();
 }
 
-void NewsDiscriminator::discriminate(News * news){
-    if(news->body.size() <= WORD_NUMBER_THRESHOLD) return;
+bool NewsDiscriminator::discriminate(News * news){
+    if(news->body.size() <= WORD_NUMBER_THRESHOLD){
+        delete news;
+        return false;
+    }
     int news_words = 0;
     int total = news->title.size();
     if(news->language == Constants::lang_english_value){
@@ -51,6 +54,10 @@ void NewsDiscriminator::discriminate(News * news){
         else if(news->language == Constants::lang_russian_value){
             this->news_russian_articles.push_back(news);
         }
-        
+        return true;
     }
+    else{
+        delete news;
+        return false;
+    } 
 }

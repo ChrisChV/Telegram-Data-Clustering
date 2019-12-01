@@ -3,7 +3,7 @@
 #include <string>
 #include "D2V.h"
 #include "constants.h"
-
+#include <thread>
 
 using namespace std;
 
@@ -82,18 +82,49 @@ int D2V::getId(char * word){
     return atoi(word);
 }
 
-void D2V::generateSimilarityMatrix(vector<News *>& news_vec){
-    int i = 0;    
-    for(auto it = news_vec.begin(); it != news_vec.end(); it++){
-        this->getKNNdocs(*it, news_vec.size(), i++);
+void D2V::threadgetKNNdocs(vector<News *>* news_vec, int init, int end){
+    int size = 0;
+    if((*news_vec).size() == 1) size = 1;
+    else size = (*news_vec).size() / 2;
+    for(int i = init; i < end; i++){
+        (*news_vec)[i]->similarityVector = vector<float>((*news_vec).size());
+        this->getKNNdocs((*news_vec)[i], size, i);
     }
+}
+
+
+void D2V::generateSimilarityMatrix(vector<News *>& news_vec){
+    thread threads[Constants::d2v_default_threads];
+    int change = news_vec.size() / Constants::d2v_default_threads;
+    int init = 0;
+    int end = 0;
+    for(int i = 0; i < Constants::d2v_default_threads; i++){
+        if(i == Constants::d2v_default_threads - 1) end = news_vec.size();
+        else end = init + change;
+        threads[i] = thread(&D2V::threadgetKNNdocs, this, &news_vec, init, end);
+        init = end;
+    }
+
+    for(int i = 0; i < Constants::d2v_default_threads; i++){
+        threads[i].join();
+    }
+
+    /*
+    int i = 0;
+    int size = 0;
+    if(news_vec.size() == 1) size = 1;
+    else size = news_vec.size() / 2;
+    for(auto it = news_vec.begin(); it != news_vec.end(); it++){
+        (*it)->similarityVector = vector<float>(news_vec.size());
+        this->getKNNdocs(*it, size, i++);
+    }*/
 }
 
 void D2V::getKNNdocs(News * news, int k, int doc_id){
     int actual_id = 0;
     TaggedDocument newDoc;
     knn_item_t items[k];
-    news->similarityVector = vector<float>(k, 0);
+    //news->similarityVector = vector<float>(k, 0);
     news->_id = doc_id;
     this->buildDoc(&newDoc, news->title);
     float * infer_vector = NULL;
@@ -103,7 +134,6 @@ void D2V::getKNNdocs(News * news, int k, int doc_id){
     for(int i = 0; i < k; i++){
         actual_id = this->getId(items[i].word);
         news->similarityVector[actual_id] = items[i].similarity;
-        
     }    
     free(infer_vector);
 }

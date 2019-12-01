@@ -13,10 +13,11 @@ NewsManager::NewsManager(){
     this->nD = nullptr;
 }
 NewsManager::NewsManager(string& option, string& dirPath){
-    if(option == Constants::d2v_category_option){
-        this->fM = new FileManager(dirPath, 1);
-    }
-    else this->fM = new FileManager(dirPath);
+    //if(option == Constants::d2v_category_option){
+    //    this->fM = new FileManager(dirPath, 1);
+    //}
+    //else 
+    this->fM = new FileManager(dirPath);
     this->parser = new Parser(this->fM);
     this->option = option;
     this->lG = nullptr;
@@ -28,17 +29,16 @@ NewsManager::NewsManager(string& option, string& dirPath){
 void NewsManager::start(){
     string temp = "";
     if(option == Constants::language_option){
-        this->t_start();
         this->lG = new Language();
         while(this->fM->nextBatch()){
             this->parser->parseData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
                 this->lG->detectLanguageLib(*it, true);
+                (*it)->clearBody();
             }
         }
         this->jsonparser.printLanguages(this->lG);
-        this->t_end();
     }
     else if(option == Constants::news_option){
         this->lG = new Language();
@@ -48,15 +48,16 @@ void NewsManager::start(){
             this->lG->clearData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
-                this->lG->detectLanguageLib(*it, true);
+                this->lG->detectLanguageLib(*it, false);
             }
             for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
-                this->nD->discriminate(*it);
+                if(this->nD->discriminate(*it)) (*it)->clearBody();
+                
             }
             for(auto it = this->lG->russian_news.begin(); it != this->lG->russian_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
-                this->nD->discriminate(*it);
+                if(this->nD->discriminate(*it)) (*it)->clearBody();
             }
         }
         this->jsonparser.printNews(this->nD);
@@ -69,15 +70,15 @@ void NewsManager::start(){
             this->lG->clearData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
-                this->lG->detectLanguageLib(*it, true);
+                this->lG->detectLanguageLib(*it, false);
             }
             for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
-                this->nD->discriminate(*it);
+                if(this->nD->discriminate(*it)) (*it)->clearBody();
             }
             for(auto it = this->lG->russian_news.begin(); it != this->lG->russian_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
-                this->nD->discriminate(*it);
+                if(this->nD->discriminate(*it)) (*it)->clearBody();
             }
         }
         this->classifier = new Classifier(this->nD);
@@ -92,15 +93,15 @@ void NewsManager::start(){
             this->lG->clearData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
-                this->lG->detectLanguageLib(*it, true);
+                this->lG->detectLanguageLib(*it, false);
             }
             for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
-                this->nD->discriminate(*it);
+                if(this->nD->discriminate(*it)) (*it)->clearBody();
             }
             for(auto it = this->lG->russian_news.begin(); it != this->lG->russian_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
-                this->nD->discriminate(*it);
+                if(this->nD->discriminate(*it)) (*it)->clearBody();
             }
         }
         this->classifier = new Classifier(this->nD);    
@@ -117,15 +118,15 @@ void NewsManager::start(){
             this->lG->clearData();
             for(auto it = this->parser->news_data.begin(); 
                     it != this->parser->news_data.end(); it++){
-                this->lG->detectLanguageLib(*it, true);
+                this->lG->detectLanguageLib(*it, false);
             }
             for(auto it = this->lG->english_news.begin(); it != this->lG->english_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
-                this->nD->discriminate(*it);
+                if(this->nD->discriminate(*it)) (*it)->clearBody();
             }
             for(auto it = this->lG->russian_news.begin(); it != this->lG->russian_news.end(); it++){
                 this->lG->deleteTitleStopWords(*it);
-                this->nD->discriminate(*it);
+                if(this->nD->discriminate(*it)) (*it)->clearBody();
             }
         }
         this->classifier = new Classifier(this->nD);    
@@ -137,14 +138,14 @@ void NewsManager::start(){
     }
     else if(option == Constants::d2v_category_option){
         this->lG = new Language();
-        cout << "Parsing all data" << endl;
-        this->parser->parseDataWithoutBatch();
-        this->fM->clearData();
-        cout << "Detecting Languages" << endl;
-        for(auto it = this->parser->news_data.begin(); 
-                it != this->parser->news_data.end(); it++){
-            if(this->lG->detectLanguageLib(*it, true)){
-                this->lG->deleteTitleStopWords(*it);
+        cout << "Parsing and languages" << endl;
+        while(this->fM->nextBatch()){
+            this->parser->parseData();
+            for(auto it = this->parser->news_data.begin(); 
+                    it != this->parser->news_data.end(); it++){
+                if(this->lG->detectLanguageLib(*it, false)){
+                    (*it)->clearBody();
+                }
             }
         }
         cout << "Init English Training" << endl;
@@ -159,7 +160,7 @@ void NewsManager::start(){
             outFile << "|" << endl;
             outFile << it->first << endl;
             for(auto it2 = it->second.begin(); it2 != it->second.end(); it2++){
-                actual_words = this->d2v->getKNNwords(*it2, 500);
+                actual_words = this->d2v->getKNNwords(*it2, 5000);
                 for(auto it3 = actual_words.begin(); it3 != actual_words.end(); it3++){
                     outFile << *it3 << endl;
                 }
@@ -171,17 +172,19 @@ void NewsManager::start(){
         outFile.open(Constants::russian_category_words);
         this->d2v = new D2V(this->lG->russian_news, true, Constants::lang_russian_value);
         cout << "Get Russian Words" << endl;
+        cout << this->lG->russian_news.size() << endl;
         for(auto it = this->classifier->russian_categories.begin();
                 it != this->classifier->russian_categories.end(); it++){
             outFile << "|" << endl;
             outFile << it->first << endl;
             for(auto it2 = it->second.begin(); it2 != it->second.end(); it2++){
-                actual_words = this->d2v->getKNNwords(*it2, 500);
+                actual_words = this->d2v->getKNNwords(*it2, 5000);
                 for(auto it3 = actual_words.begin(); it3 != actual_words.end(); it3++){
                     outFile << *it3 << endl;
                 }
             }
         }
+        
         outFile.close();
         actual_words.clear();
         actual_words.shrink_to_fit();

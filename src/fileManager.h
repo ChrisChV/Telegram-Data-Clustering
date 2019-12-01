@@ -26,8 +26,8 @@ class FileManager{
         void listFilesRecur(string& dirPath);
         void clearData();
         bool verifyHtmlExtension(string& fileName);
-        string getFileName(int index);
-        string getFileNumber(string& filePath);
+        void getFileName(int index, string& out);
+        void getFileNumber(string& filePath, string& out);
         
 
 

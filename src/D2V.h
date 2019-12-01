@@ -16,6 +16,7 @@ class D2V{
     private:
         Doc2Vec d2v;
         void buildDoc(TaggedDocument * doc, vector<string> & words);
+        void threadgetKNNdocs(vector<News *>* news_vec, int init, int end);
         int getId(char * word);
         int dim;
         int cbow;

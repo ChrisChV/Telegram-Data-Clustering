@@ -25,10 +25,14 @@ void Threading::run(){
     vector<float> * similarityVector;
     for(auto it = this->classifier->categorized_news.begin();
         it != this->classifier->categorized_news.end(); it++){
-        this->d2v = new D2V((*it), false, 0);
-        this->d2v->generateSimilarityMatrix((*it));
-        affinityPropagation(*it, examplar, 3);
         this->news_threads.push_back(vector<News *>());
+        if((*it).size() == 0) continue;
+        cout << "Training" << endl;
+        this->d2v = new D2V((*it), false, 0);
+        cout << "Similarity " << endl;
+        this->d2v->generateSimilarityMatrix((*it));
+        cout << "AP" << endl;
+        affinityPropagation(*it, examplar, 3);
         actual_index = 0;
         for(auto it2 = examplar.begin(); it2 != examplar.end(); it2++){
             if(find_examplar.find(*it2) == find_examplar.end()){

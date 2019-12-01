@@ -56,14 +56,13 @@ void FileManager::loadAllData(){
 
 void FileManager::getData(string& filePath){
     ifstream file(filePath);
-    string data( (istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()) );
-    this->file_data.push_back(data);
+    this->file_data.push_back(string ((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>())));
     file.close();
 }
 
-string FileManager::getFileNumber(string& filePath){
+void FileManager::getFileNumber(string& filePath, string& actual){
     char c = 0;
-    string actual = "";
+    //string actual = "";
     bool flag = false;
     for(int i = 0; i < filePath.size(); i++){
         c = filePath[i];
@@ -72,14 +71,19 @@ string FileManager::getFileNumber(string& filePath){
             actual = "";
             continue;
         }
-        else if(c == '.') return actual + ".html";
+        else if(c == '.'){
+            //return actual + ".html";
+            actual += ".html";
+            return;
+        }
         if(flag) actual.push_back(c);
     }
-    return "";
+    //return "";
+    return;
 }
 
-string FileManager::getFileName(int index){
-    return this->getFileNumber(this->file_names[index + this->batch_size * this->actual_batch]);
+void FileManager::getFileName(int index, string& out){
+    return this->getFileNumber(this->file_names[index + this->batch_size * this->actual_batch], out);
 }
 
 void FileManager::listFiles(string & dirPath){
