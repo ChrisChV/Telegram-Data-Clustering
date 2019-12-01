@@ -13,10 +13,6 @@ NewsManager::NewsManager(){
     this->nD = nullptr;
 }
 NewsManager::NewsManager(string& option, string& dirPath){
-    //if(option == Constants::d2v_category_option){
-    //    this->fM = new FileManager(dirPath, 1);
-    //}
-    //else 
     this->fM = new FileManager(dirPath);
     this->parser = new Parser(this->fM);
     this->option = option;
@@ -184,7 +180,6 @@ void NewsManager::start(){
                 }
             }
         }
-        
         outFile.close();
         actual_words.clear();
         actual_words.shrink_to_fit();

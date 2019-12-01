@@ -62,7 +62,6 @@ void FileManager::getData(string& filePath){
 
 void FileManager::getFileNumber(string& filePath, string& actual){
     char c = 0;
-    //string actual = "";
     bool flag = false;
     for(int i = 0; i < filePath.size(); i++){
         c = filePath[i];
@@ -72,14 +71,11 @@ void FileManager::getFileNumber(string& filePath, string& actual){
             continue;
         }
         else if(c == '.'){
-            //return actual + ".html";
             actual += ".html";
             return;
         }
         if(flag) actual.push_back(c);
     }
-    //return "";
-    return;
 }
 
 void FileManager::getFileName(int index, string& out){

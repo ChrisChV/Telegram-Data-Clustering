@@ -5,21 +5,16 @@
 
 using namespace std;
 
-
 Classifier::Classifier(){
     this->english_d2v = nullptr;
     this->russian_d2v = nullptr;
     this->nD = nullptr;
 }
+
 Classifier::Classifier(NewsDiscriminator * nD){
     this->nD = nD;
     this->english_d2v = nullptr;
     this->russian_d2v = nullptr;
-}
-
-void Classifier::runD2V(){
-    this->english_d2v = new D2V(this->nD->news_english_articles, true, Constants::lang_english_value);
-    this->getCategories();
 }
 
 void Classifier::runClassic(){

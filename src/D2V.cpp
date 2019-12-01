@@ -108,23 +108,12 @@ void D2V::generateSimilarityMatrix(vector<News *>& news_vec){
     for(int i = 0; i < Constants::d2v_default_threads; i++){
         threads[i].join();
     }
-
-    /*
-    int i = 0;
-    int size = 0;
-    if(news_vec.size() == 1) size = 1;
-    else size = news_vec.size() / 2;
-    for(auto it = news_vec.begin(); it != news_vec.end(); it++){
-        (*it)->similarityVector = vector<float>(news_vec.size());
-        this->getKNNdocs(*it, size, i++);
-    }*/
 }
 
 void D2V::getKNNdocs(News * news, int k, int doc_id){
     int actual_id = 0;
     TaggedDocument newDoc;
     knn_item_t items[k];
-    //news->similarityVector = vector<float>(k, 0);
     news->_id = doc_id;
     this->buildDoc(&newDoc, news->title);
     float * infer_vector = NULL;

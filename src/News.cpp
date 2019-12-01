@@ -21,8 +21,6 @@ void News::clearBody(){
 
 void News::saveMeta(string& property, string& content){
     if(property == Constants::meta_title) this->splitTitle(content);
-    //else if(property == Constants::meta_time) this->_time = content;
-    //else if(property == Constants::meta_description) this->description.push_back(content);
 }
 
 void News::splitTitle(string& title){
@@ -56,13 +54,6 @@ void News::printAllData(){
         for(int i = 0; i < this->body.size(); i++){
             word = this->body[i];
             cout << word << " " << endl;
-            /*for(int j = 0; j < word.size(); j++){
-                char c = word[j];
-                int cc = int(c);
-                cout << cc << " ";
-            }
-            cout << endl;*/
-            
         }
     }
 }

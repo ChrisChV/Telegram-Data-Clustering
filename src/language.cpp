@@ -38,15 +38,6 @@ bool Language::detectLanguage(News * news){
         }
         other++;
     }
-    /*
-    if(english == 0 && russian == 0){
-        news->language = Constants::lang_other_value;
-    }
-    else{
-        if(english >= russian) news->language = Constants::lang_english_value;
-        else news->language = Constants::lang_russian_value;
-    }*/
-    
     if(float(other) / float(total) >= OTHER_THRESHOLD){
         delete news;
         return false;
@@ -62,14 +53,6 @@ bool Language::detectLanguage(News * news){
         }
     }
     return true;
-    /*
-    if(english >= russian && english >= other){
-        news->language = Constants::lang_english_value;
-    }
-    else if(russian >= english && russian >= other){
-        news->language = Constants::lang_russian_value;
-    }
-    else news->language = Constants::lang_other_value;*/
 }
 
 bool Language::detectLanguageLib(News * news, bool otherFlag){
@@ -105,7 +88,6 @@ bool Language::detectLanguageLib(News * news, bool otherFlag){
             other++;
         }
         if(float(other) / float(total) >= OTHER_THRESHOLD){
-            //delete news;
             if(otherFlag){
                 news->language = Constants::lang_other_value;
                 if(lang.size() > 2) lang = lang.substr(0, 2);
@@ -128,33 +110,16 @@ bool Language::detectLanguageLib(News * news, bool otherFlag){
 
 void Language::loadWords(){
     string line = "";
-    ifstream file(Constants::english_words_path);
-    file.close();
-    /*file.open(Constants::english_words_path);
-    while(getline(file, line)){
-        this->english_words.insert(line);
-        //cout << line << endl;
-    }
-    file.close();*/
-    //cout << this->english_words.size() << endl;
-    file.open(Constants::english_sw_path);
+    ifstream file(Constants::english_sw_path);
     while(getline(file, line)){
         this->english_words.insert(line);
     }
     file.close();
-    
-    /*file.open(Constants::russian_words_path);
-    while(getline(file, line)){
-        this->russian_words.insert(line);
-    }
-    file.close();*/
     file.open(Constants::russian_sw_path);
     while(getline(file, line)){
         this->russian_words.insert(line);
     }
     file.close();
-    
-    
 }
 
 void Language::clearData(){
@@ -202,7 +167,6 @@ void Language::deleteTitleStopWords(News * news){
             if(news->_title.size() == 0) news->_title = (*it);
             else news->_title += " " + (*it);
             if((*it).size() == 1) continue;
-            //(*it)[0] = tolower((*it)[0], locale("ru_RU.utf8"));
             if(this->russian_words.find(*it) == this->russian_words.end()){
                 new_vec.push_back(*it);
             }

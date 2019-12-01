@@ -13,7 +13,6 @@ class Classifier{
         Classifier();
         Classifier(NewsDiscriminator * nD);
         void runClassic();
-        void runD2V();
         void getCategories();
         void getCategoriesWords();
         D2V * english_d2v;

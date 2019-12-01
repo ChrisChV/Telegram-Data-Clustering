@@ -47,8 +47,6 @@ void Parser::parse(string& data, string& name){
     string word = "";
     News * actual_news = new News();
     actual_news->fileName = name;
-    //cout << data << endl;
-    
     for(int i = 0; i < data.size(); i++){
         c = data[i];
         if(state == 0){
@@ -153,6 +151,5 @@ void Parser::parse(string& data, string& name){
             }
         }
     }
-    //actual_news->printAllData();
     this->news_data.push_back(actual_news);
 }
